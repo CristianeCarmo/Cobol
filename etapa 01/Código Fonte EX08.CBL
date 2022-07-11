@@ -1,0 +1,88 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.    EM01EX08.
+       AUTHOR.        CRISTIANE CARMO.
+       INSTALLATION.  HOME.
+       DATE-WRITTEN.  02-04-2022.
+       DATE-COMPILED.
+       SECURITY.      APENAS O AUTOR PODE MODIFICA-LO.
+      *REMARKS.       LE OS REGISTROS DO ARQUIVO DE ENTRADA CADFUN E
+      *               GRAVA NO ARQUIVO DE SAIDA CADSAI COM O REAJUSTE
+      *               DE SALARIO.
+
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+           SOURCE-COMPUTER. DELL-PC.
+           OBJECT-COMPUTER. DELL-PC.
+           SPECIAL-NAMES.   DECIMAL-POINT IS COMMA.
+
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT CADFUN ASSIGN TO DISK
+           ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT CADSAI ASSIGN TO DISK
+           ORGANIZATION IS LINE SEQUENTIAL.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD CADFUN
+           LABEL RECORD ARE STANDARD
+           VALUE OF FILE-ID IS "CADFUN.DAT".
+       01 REG-ENT.
+           02 CODIGO-ENT         PIC 9(05).
+           02 NOME-ENT           PIC X(20).
+           02 SALARIO-BRUTO      PIC 9(05)V99.
+
+       FD CADSAI
+           LABEL RECORD ARE STANDARD
+           VALUE OF FILE-ID IS "CADSAI.DAT".
+       01 REG-SAI.
+           02 CODIGO-SAI         PIC 9(05).
+           02 NOME-SAI           PIC X(20).
+           02 SALARIO-REAJUSTADO PIC 9(05)V99.
+
+       WORKING-STORAGE SECTION.
+       77 FIM-ARQ      PIC X(03) VALUE "NAO".
+       77 PERCREAJUSTE PIC 9(01)V99 VALUE ZEROS.
+       77 SALARIOF     PIC 9(05)V99 VALUE ZEROS.
+
+       PROCEDURE DIVISION.
+       MAIN-EM01EX08.
+           PERFORM INICIO.
+           PERFORM PRINCIPAL UNTIL FIM-ARQ EQUAL "SIM".
+           PERFORM TERMINO.
+           STOP RUN.
+
+       INICIO.
+           OPEN INPUT CADFUN
+                OUTPUT CADSAI.
+           PERFORM LEITURA.
+
+       LEITURA.
+           READ CADFUN AT END MOVE "SIM" TO FIM-ARQ.
+
+       PRINCIPAL.                              
+           PERFORM CALSALARIO.
+           PERFORM GRAVACAO.
+           PERFORM LEITURA.
+
+       CALSALARIO.
+           IF SALARIO-BRUTO < 1000 THEN
+               MOVE 1,12 TO PERCREAJUSTE                          
+           ELSE
+               IF SALARIO-BRUTO < 2000 THEN
+                   MOVE 1,11 TO PERCREAJUSTE
+               ELSE
+                   MOVE 1,10 TO PERCREAJUSTE.
+
+           MULTIPLY SALARIO-BRUTO BY PERCREAJUSTE
+               GIVING SALARIOF.
+
+       GRAVACAO.
+           MOVE CODIGO-ENT TO CODIGO-SAI.
+           MOVE NOME-ENT TO NOME-SAI.
+           MOVE SALARIOF TO SALARIO-REAJUSTADO.               
+           WRITE REG-SAI.
+
+       TERMINO.
+           CLOSE CADFUN
+                 CADSAI.

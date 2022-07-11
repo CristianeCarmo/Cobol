@@ -1,13 +1,12 @@
-       
        IDENTIFICATION DIVISION.
-       PROGRAM-ID.    EM01EX01.
+       PROGRAM-ID.    EM01EX02.
        AUTHOR.        CRISTIANE CARMO.
        INSTALLATION.  HOME.
        DATE-WRITTEN.  10-03-2022.
        DATE-COMPILED.
        SECURITY.      APENAS O AUTOR PODE MODIFICA-LO.
-      *REMARKS.       LE OS REGISTROS DE ENTRADA CADCLI1
-      *               E GRAVA NO ARQUIVO DE SAIDA CADCLI2.
+      *REMARKS.       LE OS REGISTROS DO ARQUIVO DE ENTRADA CADALU
+      *               E GRAVA NO ARQUIVO DE SAIDA CADATU.
 
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
@@ -17,44 +16,54 @@
 
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
-           SELECT CADCLI1 ASSIGN TO DISK
+           SELECT CADALU ASSIGN TO DISK
            ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT CADCLI2 ASSIGN TO DISK
+           SELECT CADATU ASSIGN TO DISK
            ORGANIZATION IS LINE SEQUENTIAL.
 
        DATA DIVISION.
        FILE SECTION.
-       FD CADCLI1
+       FD CADALU
            LABEL RECORD ARE STANDARD
-           VALUE OF FILE-ID IS "CADCLI1.DAT".
+           VALUE OF FILE-ID IS "CADALU.DAT".
        01 REG-ENT.
-          02 COD-ENT  PIC 9(05).
-          02 NOME-ENT PIC X(20).
+           02 COD-ENT  PIC 9(05).
+           02 NOME-ENT PIC X(20).
+           02 SEXO-ENT PIC A(01).
+           02 DATA-NASC-ENT.
+              05 DIA-ENT   PIC 9(02).
+              05 MES-ENT   PIC 9(02).
+              05 ANO-ENT   PIC 9(04).
 
-       FD CADCLI2
+       FD CADATU
            LABEL RECORD ARE STANDARD
-           VALUE OF FILE-ID IS "CADCLI2.DAT".
+           VALUE OF FILE-ID IS "CADATU.DAT".
+
        01 REG-SAI.
-           02 NOME-SAI PIC X(20).
            02 COD-SAI  PIC 9(05).
+           02 NOME-SAI PIC X(20).
+           02 DATA-NASC-SAI.
+              05 DIA-SAI   PIC 9(02).
+              05 MES-SAI   PIC 9(02).
+              05 ANO-SAI   PIC 9(04).
 
        WORKING-STORAGE SECTION.
-       77 FIM-ARQ      PIC X(03) VALUE "NAO".
+       77 FIM-ARQ          PIC X(03) VALUE "NAO".
 
        PROCEDURE DIVISION.
-       MAIN-EM01EX01.
+       MAIN-EM01EX02.
            PERFORM INICIO.
            PERFORM PRINCIPAL UNTIL FIM-ARQ EQUAL "SIM".
            PERFORM TERMINO.
            STOP RUN.
 
        INICIO.
-           OPEN INPUT CADCLI1
-                OUTPUT CADCLI2.
+           OPEN INPUT CADALU
+                OUTPUT CADATU.
            PERFORM LEITURA.
 
        LEITURA.
-           READ CADCLI1 AT END MOVE "SIM" TO FIM-ARQ.
+           READ CADALU AT END MOVE "SIM" TO FIM-ARQ.
 
        PRINCIPAL.
            PERFORM GRAVACAO.
@@ -63,26 +72,13 @@
        GRAVACAO.
            MOVE COD-ENT TO COD-SAI.
            MOVE NOME-ENT TO NOME-SAI.
+           MOVE DATA-NASC-ENT TO DATA-NASC-SAI.
            WRITE REG-SAI.
 
        TERMINO.
-           CLOSE CADCLI1
-                 CADCLI2.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+           CLOSE CADALU
+                 CADATU.
+           
 
 
 

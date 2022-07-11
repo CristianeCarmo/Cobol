@@ -1,19 +1,19 @@
-       
        IDENTIFICATION DIVISION.
-       PROGRAM-ID.    EM01EX01.
+       PROGRAM-ID.    EM01EX04.
        AUTHOR.        CRISTIANE CARMO.
        INSTALLATION.  HOME.
        DATE-WRITTEN.  10-03-2022.
        DATE-COMPILED.
        SECURITY.      APENAS O AUTOR PODE MODIFICA-LO.
-      *REMARKS.       LE OS REGISTROS DE ENTRADA CADCLI1
-      *               E GRAVA NO ARQUIVO DE SAIDA CADCLI2.
+      *REMARKS.       LE OS REGITROS DO ARQUIVO DE ENTRADA CADCLI1
+      *               E GRAVA APENAS OS REGISTROS DO SEXO MASCULINO
+      *               NO ARQUIVO DE SAIDA CADCLI2.
 
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
-           SOURCE-COMPUTER. DELL-PC.
-           OBJECT-COMPUTER. DELL-PC.
-           SPECIAL-NAMES.   DECIMAL-POINT IS COMMA.
+           SOURCE-COMPUTER.  DELL-PC.
+           OBJECT-COMPUTER.  DELL-PC.
+           SPECIAL-NAMES.    DECIMAL-POINT IS COMMA.
 
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
@@ -24,32 +24,34 @@
 
        DATA DIVISION.
        FILE SECTION.
+
        FD CADCLI1
            LABEL RECORD ARE STANDARD
            VALUE OF FILE-ID IS "CADCLI1.DAT".
        01 REG-ENT.
-          02 COD-ENT  PIC 9(05).
-          02 NOME-ENT PIC X(20).
+           02 COD-ENT   PIC 9(05).
+           02 NOME-ENT  PIC X(20).
+           02 SEXO-ENT  PIC X(01).
 
        FD CADCLI2
            LABEL RECORD ARE STANDARD
            VALUE OF FILE-ID IS "CADCLI2.DAT".
        01 REG-SAI.
-           02 NOME-SAI PIC X(20).
-           02 COD-SAI  PIC 9(05).
+           02 COD-SAI   PIC 9(05).
+           02 NOME-SAI  PIC X(20).
 
        WORKING-STORAGE SECTION.
-       77 FIM-ARQ      PIC X(03) VALUE "NAO".
+       77 FIM-ARQ       PIC X(03) VALUE "NAO".
 
        PROCEDURE DIVISION.
-       MAIN-EM01EX01.
+       MAIN-EM01EX04.
            PERFORM INICIO.
            PERFORM PRINCIPAL UNTIL FIM-ARQ EQUAL "SIM".
            PERFORM TERMINO.
            STOP RUN.
 
        INICIO.
-           OPEN INPUT CADCLI1
+           OPEN INPUT  CADCLI1
                 OUTPUT CADCLI2.
            PERFORM LEITURA.
 
@@ -57,8 +59,12 @@
            READ CADCLI1 AT END MOVE "SIM" TO FIM-ARQ.
 
        PRINCIPAL.
-           PERFORM GRAVACAO.
+           PERFORM CONDICAO.
            PERFORM LEITURA.
+
+       CONDICAO.
+           IF SEXO-ENT EQUAL "M" OR "m"
+                 PERFORM GRAVACAO.
 
        GRAVACAO.
            MOVE COD-ENT TO COD-SAI.
@@ -68,21 +74,3 @@
        TERMINO.
            CLOSE CADCLI1
                  CADCLI2.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
