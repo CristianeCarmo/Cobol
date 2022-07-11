@@ -12,7 +12,7 @@
 
   **Exercício 05:** Lê os arquivos de entrada, calcula média e grava no arquivo de saída somente os registros que tiveram média maior ou igual a 7,0.
 
-  **Exercício 06:** Lê os arquivos de entrada e grava no arquivo de saída somente os registros que tiverem salário bruto maior que R$3.000,00.
+  **Exercício 06:** Lê os arquivos de entrada e grava no arquivo de saída somente os registros que tiverem salário bruto maior que 3.000,00.
 
   **Exercício 07:** Lê os arquivos de entrada, seleciona para gravação somente os registros do sexo feminino, calcula média desses registros e grava no arquivo de saída.
 
