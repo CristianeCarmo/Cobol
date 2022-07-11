@@ -13,9 +13,9 @@
   
   **Exercício 05:** Lê os arquivos de entrada, calcula média e grava no arquivo de saída somente os registros que tiveram média maior ou igual a 7,0.
   
-  **Exercício 06:** Lê os arquivos de entrada e grava no arquivo de saída somente os registros que tiverem salário bruto > 3000.
+  **Exercício 06:** Lê os arquivos de entrada e grava no arquivo de saída somente os registros que tiverem salário bruto superior a 3 mil.
   
-  **Exercício 07:** Lê os arquivos de entrada, seleciona para gravação somente os registros do sexo feminino, calcula média desses registros e grava no arquivo de saída.
+  **Exercício 07:**Lê os arquivos de entrada, seleciona para gravação somente os registros do sexo feminino, calcula média desses registros e grava no arquivo de saída.
   
   **Exercício 08:** Lê o arquivo de entrada, calcula o reajuste de salário conforme faixa salarial e gravas os registros no arquivo de saída.
 
